@@ -1,3 +1,10 @@
 com/qa/client/RestClient.class
+com/qa/constants/MethodTypes.class
 com/qa/base/BaseAdapter.class
+com/qa/config/HttpConfig.class
+com/qa/client/HttpUtil$1.class
+com/qa/data/AbstractResponse.class
+com/qa/constants/Constants.class
+com/qa/client/SchemaValidationUtil.class
+com/qa/client/HttpUtil.class
 com/qa/data/Users.class

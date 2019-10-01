@@ -5,8 +5,7 @@
 <suite name="APITests" parallel="false">
 	<test name="APITests">
 		<classes>
-			<class name="com.qa.apitests.GetTest" />
-			<class name="com.qa.apitests.PostTest" />
+			<class name="com.qa.apitests.GetTestActual"/>
     	</classes>
 	</test>
 </suite>

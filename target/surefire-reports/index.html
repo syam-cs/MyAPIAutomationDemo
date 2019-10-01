@@ -91,7 +91,7 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">2 methods,   2 passed</span>
+                    <span class="method-stats">4 methods,   4 passed</span>
                   </li>
                   <li>
                     <span class="method-list-title passed">Passed methods</span>
@@ -102,12 +102,22 @@
                     <div class="method-list-content passed suite-APITests">
                       <span>
                         <img width="3%" src="passed.png"/>
-                        <a href="#" class="method navigator-link" panel-name="suite-APITests" title="com.qa.apitests.GetTest" hash-for-method="getTestCase">getTestCase</a> <!-- method navigator-link -->
+                        <a href="#" class="method navigator-link" panel-name="suite-APITests" title="com.qa.apitests.GetTestActual" hash-for-method="badRequestTestCase">badRequestTestCase</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
                         <img width="3%" src="passed.png"/>
-                        <a href="#" class="method navigator-link" panel-name="suite-APITests" title="com.qa.apitests.PostTest" hash-for-method="postTestCase">postTestCase</a> <!-- method navigator-link -->
+                        <a href="#" class="method navigator-link" panel-name="suite-APITests" title="com.qa.apitests.GetTestActual" hash-for-method="getTestCase">getTestCase</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-APITests" title="com.qa.apitests.GetTestActual" hash-for-method="postTestCase">postTestCase</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-APITests" title="com.qa.apitests.GetTestActual" hash-for-method="putTestCase">putTestCase</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                     </div> <!-- method-list-content passed suite-APITests -->
@@ -125,9 +135,23 @@
           <div class="suite-APITests-class-passed">
             <div class="main-panel-header rounded-window-top">
               <img src="passed.png"/>
-              <span class="class-name">com.qa.apitests.PostTest</span>
+              <span class="class-name">com.qa.apitests.GetTestActual</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="badRequestTestCase">
+                  </a> <!-- badRequestTestCase -->
+                  <span class="method-name">badRequestTestCase</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="getTestCase">
+                  </a> <!-- getTestCase -->
+                  <span class="method-name">getTestCase</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
               <div class="method">
                 <div class="method-content">
                   <a name="postTestCase">
@@ -135,19 +159,11 @@
                   <span class="method-name">postTestCase</span>
                 </div> <!-- method-content -->
               </div> <!-- method -->
-            </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-APITests-class-passed -->
-          <div class="suite-APITests-class-passed">
-            <div class="main-panel-header rounded-window-top">
-              <img src="passed.png"/>
-              <span class="class-name">com.qa.apitests.GetTest</span>
-            </div> <!-- main-panel-header rounded-window-top -->
-            <div class="main-panel-content rounded-window-bottom">
               <div class="method">
                 <div class="method-content">
-                  <a name="getTestCase">
-                  </a> <!-- getTestCase -->
-                  <span class="method-name">getTestCase</span>
+                  <a name="putTestCase">
+                  </a> <!-- putTestCase -->
+                  <span class="method-name">putTestCase</span>
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
@@ -164,8 +180,7 @@
 &lt;suite guice-stage=&quot;DEVELOPMENT&quot; verbose=&quot;0&quot; name=&quot;APITests&quot;&gt;
   &lt;test name=&quot;APITests&quot;&gt;
     &lt;classes&gt;
-      &lt;class name=&quot;com.qa.apitests.GetTest&quot;/&gt;
-      &lt;class name=&quot;com.qa.apitests.PostTest&quot;/&gt;
+      &lt;class name=&quot;com.qa.apitests.GetTestActual&quot;/&gt;
     &lt;/classes&gt;
   &lt;/test&gt; &lt;!-- APITests --&gt;
 &lt;/suite&gt; &lt;!-- APITests --&gt;
@@ -179,7 +194,7 @@
           <div class="main-panel-content rounded-window-bottom">
             <ul>
               <li>
-                <span class="test-name">APITests (2 classes)</span>
+                <span class="test-name">APITests (1 class)</span>
               </li>
             </ul>
           </div> <!-- main-panel-content rounded-window-bottom -->
@@ -205,20 +220,28 @@ data.addColumn('number', 'Number');
 data.addColumn('string', 'Method');
 data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
-data.addRows(2);
+data.addRows(4);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'postTestCase')
-data.setCell(0, 2, 'com.qa.apitests.PostTest')
-data.setCell(0, 3, 1324);
+data.setCell(0, 1, 'badRequestTestCase')
+data.setCell(0, 2, 'com.qa.apitests.GetTestActual')
+data.setCell(0, 3, 1519);
 data.setCell(1, 0, 1)
 data.setCell(1, 1, 'getTestCase')
-data.setCell(1, 2, 'com.qa.apitests.GetTest')
-data.setCell(1, 3, 953);
+data.setCell(1, 2, 'com.qa.apitests.GetTestActual')
+data.setCell(1, 3, 963);
+data.setCell(2, 0, 2)
+data.setCell(2, 1, 'putTestCase')
+data.setCell(2, 2, 'com.qa.apitests.GetTestActual')
+data.setCell(2, 3, 616);
+data.setCell(3, 0, 3)
+data.setCell(3, 1, 'postTestCase')
+data.setCell(3, 2, 'com.qa.apitests.GetTestActual')
+data.setCell(3, 3, 511);
 window.suiteTableData['APITests']= { tableData: data, tableDiv: 'times-div-APITests'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 2 seconds</span>
+              <span class="suite-total-time">Total running time: 3 seconds</span>
               <div id="times-div-APITests">
               </div> <!-- times-div-APITests -->
             </div> <!-- times-div -->
@@ -244,25 +267,22 @@ return data;
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <div class="chronological-class">
-              <div class="chronological-class-name">com.qa.apitests.GetTest</div> <!-- chronological-class-name -->
-              <div class="configuration-method before">
-                <span class="method-name">setUp</span>
+              <div class="chronological-class-name">com.qa.apitests.GetTestActual</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">badRequestTestCase</span>
                 <span class="method-start">0 ms</span>
-              </div> <!-- configuration-method before -->
+              </div> <!-- test-method -->
               <div class="test-method">
                 <span class="method-name">getTestCase</span>
-                <span class="method-start">5 ms</span>
+                <span class="method-start">1520 ms</span>
               </div> <!-- test-method -->
-            </div> <!-- chronological-class -->
-            <div class="chronological-class">
-              <div class="chronological-class-name">com.qa.apitests.PostTest</div> <!-- chronological-class-name -->
-              <div class="configuration-method before">
-                <span class="method-name">setUp</span>
-                <span class="method-start">959 ms</span>
-              </div> <!-- configuration-method before -->
               <div class="test-method">
                 <span class="method-name">postTestCase</span>
-                <span class="method-start">960 ms</span>
+                <span class="method-start">2484 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">putTestCase</span>
+                <span class="method-start">2996 ms</span>
               </div> <!-- test-method -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

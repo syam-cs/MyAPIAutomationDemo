@@ -1,2 +1,9 @@
+com/java/dto/GetResponse.class
+com/qa/apitests/GetTestActual.class
+com/java/dto/PutResponse.class
+com/java/dto/GetResponseData.class
+com/qa/apitests/GetTestActual$1.class
+com/java/dto/PostResponse.class
+com/qa/apitests/PostTest$1.class
 com/qa/apitests/GetTest.class
 com/qa/apitests/PostTest.class

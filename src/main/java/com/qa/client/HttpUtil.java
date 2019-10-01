@@ -2,13 +2,12 @@ package com.qa.client;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Map;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,7 +16,10 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.qa.config.HttpConfig;
@@ -41,7 +43,9 @@ public class HttpUtil {
 		switch (type) {
 		case POST:
 			try {
-				response = (T) mapper.readValue(post(config, body, headers), responseClass);
+				T responseExecute = post(config, body, headers, responseClass);
+				response = (T) mapper.readValue(responseExecute.getContent(), responseClass);
+				response.setStatusCode(responseExecute.getStatusCode());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -49,7 +53,9 @@ public class HttpUtil {
 			break;
 		case PUT:
 			try {
-				response = (T) mapper.readValue(put(config, body, headers), responseClass);
+				T responseExecute = put(config, body, headers, responseClass);
+				response = (T) mapper.readValue(responseExecute.getContent(), responseClass);
+				response.setStatusCode(responseExecute.getStatusCode());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,7 +63,6 @@ public class HttpUtil {
 			break;
 		case GET:
 			try {
-//				response = (T) mapper.readValue(get(config, headers, statusCode), responseClass);
 				T responseExecute = get(config,headers, responseClass);
 				response = (T) mapper.readValue(responseExecute.getContent(), responseClass);
 				response.setStatusCode(responseExecute.getStatusCode());
@@ -104,8 +109,9 @@ public class HttpUtil {
 		return responseGet;
 		} 
 
-	private String post(HttpConfig httpConfig, String jsonString, HashMap<String, String> headers) throws IOException {
-
+	private <T extends AbstractResponse> T post(HttpConfig httpConfig, String jsonString, HashMap<String, String> headers, Class<T> responseClass) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		T responsePost = null;
+		HashMap<String, String> hashMap = new HashMap<String, String>();
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setConnectionRequestTimeout(httpConfig.getTimeout())
 				.setConnectTimeout(httpConfig.getTimeout()).build()
@@ -116,30 +122,29 @@ public class HttpUtil {
 		httpPost.setConfig(requestConfig);
 		httpPost.setHeader("Accept", "application/json");
 		httpPost.setHeader("Content-type", "application/json");
-		if(Objects.nonNull(headers.get("jwt")))
-			httpPost.setHeader(HttpHeaders.AUTHORIZATION,headers.get("jwt"));
-		StringEntity entity = new StringEntity(jsonString);
-		httpPost.setEntity(entity);
-
-		try {
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-				public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
-					int status = httpResponse.getStatusLine().getStatusCode();
-					//Asserting the Status Code
-//					Assert.assertEquals(status, statusCode, "Asserting the Status Code");
-					HttpEntity responseEntity = httpResponse.getEntity();
-					return responseEntity != null ? EntityUtils.toString(responseEntity) : null;
-					
-				}
-			};
-			return closeableHttpClient.execute(httpPost, responseHandler);
-		} finally {
-			//closeableHttpClient.close();
+		httpPost.setEntity(new StringEntity(jsonString));
+		
+		CloseableHttpResponse httpResponse = closeableHttpClient.execute(httpPost);
+		
+		Header[] headerArray = httpResponse.getAllHeaders();
+		for (Header header : headerArray) {
+			hashMap.put(header.getName(), header.getValue());
 		}
-	}
+		
+		HttpEntity responseEntity = httpResponse.getEntity();
+		String responseExecute = EntityUtils.toString(responseEntity);
+		responsePost = (T) Class.forName(responseClass.getName()).newInstance();
+		
+		responsePost.setContent(responseExecute);
+		responsePost.setStatusCode(httpResponse.getStatusLine().getStatusCode());
+		responsePost.setHeaderArray(hashMap);
+		
+		return responsePost;
+		}
 	
-	private String put(HttpConfig httpConfig, String jsonString, HashMap<String, String> headers) throws IOException {
-
+	private <T extends AbstractResponse> T put(HttpConfig httpConfig, String jsonString, HashMap<String, String> headers, Class<T> responseClass) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		T responsePut = null;
+		HashMap<String, String> hashMap = new HashMap<String, String>();
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setConnectionRequestTimeout(httpConfig.getTimeout())
 				.setConnectTimeout(httpConfig.getTimeout()).build()
@@ -150,25 +155,52 @@ public class HttpUtil {
 		httpPut.setConfig(requestConfig);
 		httpPut.setHeader("Accept", "application/json");
 		httpPut.setHeader("Content-type", "application/json");
-		if(Objects.nonNull(headers.get("jwt")))
-			httpPut.setHeader(HttpHeaders.AUTHORIZATION,headers.get("jwt"));
-		StringEntity entity = new StringEntity(jsonString);
-		httpPut.setEntity(entity);
-
-		try {
-			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
-				public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
-					int status = httpResponse.getStatusLine().getStatusCode();
-					//Asserting the Status Code
-//					Assert.assertEquals(status, statusCode, "Asserting the Status Code");
-					HttpEntity responseEntity = httpResponse.getEntity();
-					return responseEntity != null ? EntityUtils.toString(responseEntity) : null;
-				}
-			};
-			return closeableHttpClient.execute(httpPut, responseHandler);
-		} finally {
-			//closeableHttpClient.close();
+		httpPut.setEntity(new StringEntity(jsonString));
+		
+		CloseableHttpResponse httpResponse = closeableHttpClient.execute(httpPut);
+		
+		Header[] headerArray = httpResponse.getAllHeaders();
+		for (Header header : headerArray) {
+			hashMap.put(header.getName(), header.getValue());
 		}
+		
+		HttpEntity responseEntity = httpResponse.getEntity();
+		String responseExecute = EntityUtils.toString(responseEntity);
+		responsePut = (T) Class.forName(responseClass.getName()).newInstance();
+		
+		responsePut.setContent(responseExecute);
+		responsePut.setStatusCode(httpResponse.getStatusLine().getStatusCode());
+		responsePut.setHeaderArray(hashMap);
+		
+		return responsePut;
+	}
+	
+	//Post Method with headers
+	public CloseableHttpResponse postErrorRequest(String url, String entity, HashMap<String, String> headerMap) throws ClientProtocolException, IOException, JSONException {
+		closeableHttpClient = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.setEntity(new StringEntity(entity));
+		
+		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+			httpPost.addHeader(entry.getKey(), entry.getValue());
+		}
+		
+		CloseableHttpResponse closeableHttpResponse =  closeableHttpClient.execute(httpPost	);
+		return closeableHttpResponse;
+	}
+	
+	//Put Method with headers
+	public CloseableHttpResponse putErrorRequest(String url, String entity, HashMap<String, String> headerMap) throws ClientProtocolException, IOException, JSONException {
+		closeableHttpClient = HttpClients.createDefault();
+		HttpPut httpPut = new HttpPut(url);
+		httpPut.setEntity(new StringEntity(entity));
+		
+		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+			httpPut.addHeader(entry.getKey(), entry.getValue());
+		}
+		
+		CloseableHttpResponse closeableHttpResponse =  closeableHttpClient.execute(httpPut);
+		return closeableHttpResponse;
 	}
 	
 }
